@@ -11,20 +11,21 @@ import os
 class Settings(Connection): 
 
     def __init__(self):
+        self.info_dir = os.path.join(os.path.dirname(os.path.dirname(os.path.dirname(__file__))),r"data\info")
         self.azure_path = os.path.join(os.path.dirname(os.path.dirname(os.path.dirname(__file__))), 'azure-dark.tcl')
         super().__init__(True) #Parent's class constructor
         self.settings_win = Tk() 
         self.settings_win.geometry("800x600")
         self.settings_win.title("Settings")
         style = ttk.Style(self.settings_win)
-        self.settings_win.tk.call('source','azure-dark.tcl')
+        self.settings_win.tk.call('source',self.azure_path)
         style.theme_use('azure-dark')
         self.main()
         self.settings_win.mainloop()
     
     #Get username
     def get_name(self):
-        username_file = open(r'data/info/username.txt','r')
+        username_file = open(fr'{self.info_dir}/username.txt','r')
         self.username = username_file.read()
         username_file.close()
         return self.username
@@ -36,13 +37,13 @@ class Settings(Connection):
         self.resowin.title("Resolution settings")
         self.resowin.geometry("800x600")
         res_sty = ttk.Style(self.resowin)
-        self.resowin.tk.call('source',self.azure_path)
+        self.resowin.tk.call('source','azure-dark.tcl')
         res_sty.theme_use('azure-dark')
         lbl = Label(self.resowin,text= "Change my resolution to :",font = ("Arial",13))
         lbl.place(x=20,y=50)
 
         reso1 = ttk.Button(self.resowin,text = "800x600",style = "AccentButton",command = lambda : self.change_reso("800x600"))
-        reso2 = ttk.Button(self.resowin,text = "1366x768",style = "AccentButton",command = lambda : self.change_reso("1366x768"))
+        reso2 = ttk.Button(self.resowin,text = "1366x768",style = "AccentButton",command = lambda : self.change_reso("1366×768"))
         reso3 = ttk.Button(self.resowin,text = "1600x900",style = "AccentButton",command = lambda : self.change_reso("1600x900"))
         reso4 = ttk.Button(self.resowin,text = "1600x1200",style = "AccentButton",command = lambda : self.change_reso("1600x1200"))
 
@@ -54,7 +55,7 @@ class Settings(Connection):
         self.resowin.mainloop()
     
     def change_reso(self,s):
-        with open(r'data/info/id.txt') as id:
+        with open(fr'{self.info_dir}/id.txt') as id:
             myid = str(id.read())
 
         self.sock.send(f";#';'%$&,,..--=reso_settings {myid}".encode())
@@ -94,7 +95,7 @@ class Settings(Connection):
     
     #Change username
     def change_name(self,name):
-        _file = open('data/info/username.txt','w')
+        _file = open(fr'{self.info_dir}/username.txt','w')
         _file.truncate()
         _file.write(name)
         _file.close()
@@ -102,17 +103,17 @@ class Settings(Connection):
     #Logout -> clear all txt files
     def log_out(self):
 
-        with open(r'data\info\email.txt',"a+") as em:
+        with open(fr'{self.info_dir}/email.txt',"a+") as em:
             em.truncate(0)
-        with open(r'data\info\id.txt',"a+") as em:
+        with open(fr'{self.info_dir}/id.txt',"a+") as em:
             em.truncate(0)
-        with open(r'data\info\notification.txt',"a+") as em:
+        with open(fr'{self.info_dir}/notification.txt',"a+") as em:
             em.truncate(0)
-        with open(r'data\info\password.txt',"a+") as em:
+        with open(fr'{self.info_dir}/password.txt',"a+") as em:
             em.truncate(0)
-        with open(r'data\info\registered.txt',"a+") as em:
+        with open(fr'{self.info_dir}/registered.txt',"a+") as em:
             em.truncate(0)
-        with open(r'data\info\username.txt',"a+") as em:
+        with open(fr'{self.info_dir}/username.txt',"a+") as em:
             em.truncate(0)
 
         self.sock.close()
@@ -132,7 +133,7 @@ class Settings(Connection):
              
     def change_passw(self):
     
-        with open(r'data\info\id.txt') as filex:
+        with open(fr'{self.info_dir}/id.txt') as filex:
             _id = filex.read()
         window = Toplevel(width = 600,height = 400)
         window.resizable(0,0)
@@ -178,7 +179,7 @@ class Settings(Connection):
     # if it's valid then server changes the password(updates the json file)
     # View Server/Server.py for refernece
     def save_psw(self):
-        with open(r'data\info\id.txt') as em:
+        with open(fr'{self.info_dir}/id.txt') as em:
             self.id = em.read()
 
         old_psw = self.old_psw.get()
@@ -205,7 +206,7 @@ class Settings(Connection):
     #Enable/Disable desktop notifications
     def notification(self):
         val = self.chck_var.get()
-        _notif = open(r'data\info\notification.txt','w')
+        _notif = open(fr'{self.info_dir}/\notification.txt','w')
         _notif.truncate()
         if val:
             _notif.write(str(val))
@@ -216,9 +217,7 @@ class Settings(Connection):
 
     #Checks if notification is enabled or disabled
     def get_notf_val(self):
-        _notif = open(r'data\info\notification.txt')
+        _notif = open(fr'{self.info_dir}/notification.txt')
         x =  _notif.read()
         _notif.close()
         return x
-
-#Settings()

@@ -22,7 +22,7 @@ class ChatWin(Connection):
     '''
     def __init__(self,old_id,name):
         super().__init__(True)
-        
+        self.azure_path = os.path.join(os.path.dirname(os.path.dirname(os.path.dirname(__file__))), 'azure-dark.tcl')
         self.name = name
         self.sock.send(f"replace {old_id}".encode())
         self.over = False
@@ -44,7 +44,7 @@ class ChatWin(Connection):
         self.root.title("Pychat2.0")
         self.style = ttk.Style(self.root)
         self.root.protocol("WM_DELETE_WINDOW",self.handle_quit)
-        self.root.tk.call('source','azure-dark.tcl')
+        self.root.tk.call('source',self.azure_path)
         self.style.theme_use('azure-dark')
         self.root.geometry("1600x900")
         cht_font = font.Font(family = "Trebuchet MS",size =17)
@@ -149,8 +149,8 @@ class Main(Connection):
     
     def __init__(self):
         super().__init__(True) #Calling the parent class's Constructor
-
-
+        self.info_dir = os.path.join(os.path.dirname(os.path.dirname(os.path.dirname(__file__))),r"data\info")
+        self.azure_path = os.path.join(os.path.dirname(os.path.dirname(os.path.dirname(__file__))), 'azure-dark.tcl')
         try:
             self.sock.send("id".encode())
             self.id = self.sock.recv(1024).decode()
@@ -158,7 +158,7 @@ class Main(Connection):
             self.mainwin.protocol("WM_DELETE_WINDOW",self.close_conn)
             self.mainwin.resizable(0,0)
             style = ttk.Style(self.mainwin)
-            self.mainwin.tk.call('source','azure-dark.tcl')
+            self.mainwin.tk.call('source',self.azure_path)
             style.theme_use('azure-dark')
             self.load_images()
             width,height = GetSystemMetrics(0),GetSystemMetrics(1)
@@ -255,7 +255,7 @@ class Main(Connection):
         settings = Settings()
 
     def get_name(self):
-        username_file = open(r'data/info/username.txt','r')
+        username_file = open(fr'{self.info_dir}/username.txt','r')
         self.username = username_file.read()
         username_file.close()
         return self.username

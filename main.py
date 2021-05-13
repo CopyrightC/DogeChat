@@ -150,17 +150,18 @@ class Main(Connection):
     def __init__(self):
         super().__init__(True) #Calling the parent class's Constructor
         reso = self.req_server_reso()
-
+        print(reso)
         try:
             if reso != "None" and reso!="800x600":
                 self.sock.close()
-                print(reso)
-                os.system(f"python resolutions/{reso}/main.py")
+                os.chdir(fr"resolutions/{reso}")
+                os.system("main.py")
                 quit()
-            if reso == "800x600":
+
+            elif reso == "800x600":
                 pass
-        except:
-            pass
+        except Exception as e:
+            print(e)
 
         try:
             self.sock.send("id".encode())
