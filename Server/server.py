@@ -88,7 +88,7 @@ class Connection:
                         transid = self.get_id(eml)
                         client.send(str(transid).encode())
                     else:
-                        print("else")
+                        client.send(transferdata.encode())
 
                 if self.data == "##%--$$join_room$$--##%":
                     client.send("jroom".encode())
@@ -152,11 +152,9 @@ class Connection:
 #and his room from self.details
 
             except ConnectionResetError:
-                print("err")
                 client.close()
 
             except OSError:
-                print("err")
                 client.close()
     
     def get_id(self,eml):
@@ -174,10 +172,9 @@ class Connection:
     
     def verify_login(self,eml,psw):
         json_data = json.load(open(r'emails.json'))
-
-        if json_data[eml]:
+        try:
             id = json_data[eml]
-        else:
+        except KeyError:
             return "Email isn't registered"
 
         json_data2 = json.load(open(r'serverdata.json'))
