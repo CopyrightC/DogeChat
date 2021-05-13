@@ -61,6 +61,7 @@ class Register(Connection):
         sys.exit()
 
     def log_in(self):
+        global root
         root = Toplevel(height=600,width=800)
         root.title("PyChat 2.0")
         style = ttk.Style(root)
@@ -83,12 +84,20 @@ class Register(Connection):
         self.sock.recv(1024)
         self.sock.send(fr"{self.eml_entry.get()} {self.psw_entry.get()}".encode())
         x = self.sock.recv(1024).decode()
-        print(x)
+
         if x == "Successfully logged in!":
             id = self.sock.recv(1024).decode()
+
             with open("data/info/id.txt","w") as idt:
                 idt.write(id)
+
+            with open("data/info/registered.txt","w") as idt:
+                idt.write("registered")
+        
             messagebox.showinfo("Success",x)
+            self.window.destroy()
+            root.destroy()
+            system("python main.py")
         else:
             messagebox.showinfo("Info",x)
     def send_mail(self):
