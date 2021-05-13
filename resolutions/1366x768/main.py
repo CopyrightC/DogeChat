@@ -67,6 +67,7 @@ class ChatWin(Connection):
         self.root.bind("<KeyRelease>",self.onrel)
         self.root.bind("<Return>",self.sendmsg)
         self.root.mainloop()
+        
     def feedback(self):
         opw(r"https://mail.google.com/mail/u/0/?fs=1&to=shouryasinha001@gmail.com&su=Feedback%20regarding%20PyChat&&tf=cm")
     

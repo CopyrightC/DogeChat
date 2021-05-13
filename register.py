@@ -1,4 +1,6 @@
+from re import L
 from tkinter import *
+from tkinter import ttk
 from tkinter import messagebox
 import socket
 import smtplib
@@ -9,7 +11,7 @@ from Connection import Connection
 
 class Register(Connection):
     def __init__(self):
-
+        #self.log_in()
         x = self.if_Registered()
         if x:
             system('main.py')
@@ -53,10 +55,42 @@ class Register(Connection):
         label2.place(x=20,y=420)
         log_inlbl = Label(self.window,text= "Log in",bg="gray20",fg= "purple1",font = ("Arial",15))
         log_inlbl.place(x=199,y=420)
+        log_inlbl.bind("<Button-1>",lambda e : self.log_in())
 
     def close(self):
         sys.exit()
 
+    def log_in(self):
+        root = Toplevel(height=600,width=800)
+        root.title("PyChat 2.0")
+        style = ttk.Style(root)
+        root.tk.call("source","azure-dark.tcl")
+        style.theme_use("azure-dark")
+        lbl = Label(root,text="Email",font = ("Arial",13))
+        lbl.place(x=20,y=80)
+        lbl2 = Label(root,text="Password",font = ("Arial",13))
+        lbl2.place(x=20,y=150)
+        self.eml_entry = ttk.Entry(root,width=40)
+        self.eml_entry.place(x=200,y=80)
+        self.psw_entry = ttk.Entry(root,width=40)
+        self.psw_entry.place(x=200,y=150)
+        lgn_btn = ttk.Button(root,text= "Log in",style = "AccentButton",command=self.try_login)
+        lgn_btn.place(x=680,y=525)
+        root.mainloop()
+    
+    def try_login(self):
+        self.sock.send("##$@!@$%$$%*==log_in==$#@%@#$$!~~@$".encode())
+        self.sock.recv(1024)
+        self.sock.send(fr"{self.eml_entry.get()} {self.psw_entry.get()}".encode())
+        x = self.sock.recv(1024).decode()
+        print(x)
+        if x == "Successfully logged in!":
+            id = self.sock.recv(1024).decode()
+            with open("data/info/id.txt","w") as idt:
+                idt.write(id)
+            messagebox.showinfo("Success",x)
+        else:
+            messagebox.showinfo("Info",x)
     def send_mail(self):
         self.email = self.email_entry.get('1.0','end-1c')
         self.username = self.username_entry.get('1.0','end-1c')

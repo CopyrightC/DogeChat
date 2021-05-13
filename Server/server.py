@@ -1,3 +1,4 @@
+from os import pipe
 import socket
 import json
 from sys import winver
@@ -76,6 +77,19 @@ class Connection:
                         client.send("OK".encode())
                         self._store_psw_id(name,passw,client)
 
+                if self.data == "##$@!@$%$$%*==log_in==$#@%@#$$!~~@$":
+                    client.send("OK".encode())
+                    split_str = client.recv(1024).decode()
+                    eml, psw = split_str.split()[0] , split_str.split()[1]
+                    transferdata=self.verify_login(eml,psw)
+                    print(transferdata)
+                    client.send(transferdata.encode())
+                    if transferdata == "Successfully logged in!":
+                        transid = self.get_id(eml)
+                        client.send(str(transid).encode())
+                    else:
+                        print("else")
+
                 if self.data == "##%--$$join_room$$--##%":
                     client.send("jroom".encode())
                     id = client.recv(1024).decode()
@@ -138,11 +152,17 @@ class Connection:
 #and his room from self.details
 
             except ConnectionResetError:
+                print("err")
                 client.close()
 
             except OSError:
+                print("err")
                 client.close()
-
+    
+    def get_id(self,eml):
+        json_data = json.load(open(r'emails.json'))
+        idx = json_data[eml]
+        return idx
     def check_id_reso(self,id):
         json_data = json.load(open(r'resolutions.json'))
         try:
@@ -151,8 +171,23 @@ class Connection:
 
         except:
             return "None"
-    #Check if the email is valid or not 
     
+    def verify_login(self,eml,psw):
+        json_data = json.load(open(r'emails.json'))
+
+        if json_data[eml]:
+            id = json_data[eml]
+        else:
+            return "Email isn't registered"
+
+        json_data2 = json.load(open(r'serverdata.json'))
+        passw = json_data2[str(id)]
+        print(passw)
+        if passw != psw:
+            return "Wrong pass"
+        return "Successfully logged in!"
+
+    #Check if the email is valid or not 
     def _email_validation(self,email,client):
         is_valid = validate_email(email)
 
@@ -161,17 +196,22 @@ class Connection:
             id = self.generate_id()
             client.send(str(id).encode())
             self._save_users(self.username,self.password,id)
-            self.save_mail(email)
+            self.save_mail(email,id)
 
         else:
             client.send("incorrect!".encode())
 
     #Save the email in a text file
 
-    def save_mail(self,email):
+    def save_mail(self,email,id):
         file = open(r'server files/email.txt','w')
-        file.write(email)
+        file.write(email + "\n")
         file.close()
+        json_data = json.load(open("emails.json"))
+        json_data[email] = id
+
+        with open(r"emails.json","w") as js:
+            json.dump(json_data,js)
 
     #Save the username in a text file
 
