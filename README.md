@@ -1,2 +1,2 @@
-# Pychat-2.0
+# DogeChat
 [Under development]
