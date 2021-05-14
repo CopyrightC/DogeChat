@@ -1,4 +1,6 @@
 # DogeChat [Pychat 2.0]
+![image](https://user-images.githubusercontent.com/68592417/118290131-b617d580-b4f3-11eb-932e-ddcf915f4ecb.png)
+
 DogeChat is a sequel to [GUI-Chat-app](https://github.com/SATAN01/GUI-chat-app), having many more features
 like Settings page, main-menu, support for different resoulution unlike most other tkinter made GUIs etc.
 
