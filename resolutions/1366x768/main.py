@@ -2,11 +2,9 @@ from tkinter import *
 import socket
 import sys
 import os
-import speech_recognition as sr
 from settings import Settings
 from tkinter import ttk
 from tkinter import scrolledtext
-from functools import partial
 from plyer import notification
 from tkinter import font
 from threading import Thread

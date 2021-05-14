@@ -3,7 +3,6 @@ from tkinter import ttk
 from tkinter import messagebox
 from typing import Set
 from Connection import Connection
-from functools import partial
 import sys
 import os
 

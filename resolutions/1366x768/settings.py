@@ -2,7 +2,6 @@ from tkinter import *
 from tkinter import ttk
 from tkinter import messagebox
 from Connection import Connection
-from functools import partial
 import sys
 import os
 
