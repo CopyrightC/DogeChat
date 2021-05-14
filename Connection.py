@@ -6,7 +6,7 @@ class Connection:
     def __init__(self,bool=False):
         try:
             self.conn = True
-            self.ip,self.port = "3.142.167.54",12203
+            self.ip,self.port = "192.168.1.77",65432
             self.sock = socket.socket(socket.AF_INET,socket.SOCK_STREAM)
             if bool:
                 self.sock.connect((self.ip,self.port))
