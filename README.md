@@ -24,3 +24,7 @@ git clone https://github.com/SATAN01/DogeChat
 cd DogeChat
 python register.py
 ```
+
+# Special Thanks
+
+Thanks to [@rdbende](https://github.com/rdbende) for the [Azure-ttk-theme](https://github.com/rdbende/Azure-ttk-theme)
