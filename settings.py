@@ -63,13 +63,7 @@ class Settings(Connection):
             print("sent")
     #Mainwindow ; frontend code
     def main(self):
-        boolx = self.get_notf_val()
-        if boolx == "True":
-            boolval = True
-        else:
-            boolval = False
-
-        self.chck_var = BooleanVar(value = boolval)
+        
         self.username = self.get_name()
         set_lbl = Label(self.settings_win,text="Settings",font = ("Arial",13),bg = "gray78",fg= "black")
         set_lbl.place(x=370,y=10)
@@ -81,8 +75,6 @@ class Settings(Connection):
         self.change_pass = ttk.Button(self.settings_win,text = "Change password",style = "AccentButton",command =self.change_passw)
         self.change_pass.place(x=30,y=180)
         self.settings_win.resizable(0,0)
-        chck = ttk.Checkbutton(self.settings_win,text="Enable desktop notifications",variable = self.chck_var,style = "Switch",command=self.notification)
-        chck.place(x=30,y=400)
         btn = ttk.Button(self.settings_win,text="Save changes",style='AccentButton',command=self.save_changes)
         btn.place(x=670,y=535)
         log_out= ttk.Button(self.settings_win,text = "Log Out",command=self.log_out)
@@ -122,7 +114,7 @@ class Settings(Connection):
         try:
             if self.entry.get() != self.username:
                 self.change_name(self.entry.get())
-                messagebox.showinfo("Success","Changes saved successfully!")
+                messagebox.showinfo("Success","Changes saved successfully! \n Note : You need to restart the application in order for the changes to take place.")
                 
         except Exception as e:
             print(e)
@@ -199,24 +191,5 @@ class Settings(Connection):
                     self.sock.close()
                 else:
                     messagebox.showinfo("Failed","Incorrect password!")
-
-    #Enable/Disable desktop notifications
-    def notification(self):
-        val = self.chck_var.get()
-        _notif = open(r'data\info\notification.txt','w')
-        _notif.truncate()
-        if val:
-            _notif.write(str(val))
-            _notif.close()
-        else:
-            _notif.write(str(val))
-            _notif.close()
-
-    #Checks if notification is enabled or disabled
-    def get_notf_val(self):
-        _notif = open(r'data\info\notification.txt')
-        x =  _notif.read()
-        _notif.close()
-        return x
 
 #Settings()
