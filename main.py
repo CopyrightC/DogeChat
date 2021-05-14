@@ -20,9 +20,10 @@ class ChatWin(Connection):
     '''
     Constructor
     '''
-    def __init__(self,old_id,name):
+    def __init__(self,old_id,name,cht_nm,cht_psw):
         super().__init__(True)
-        
+        self.cht_nm = cht_nm
+        self.cht_psw = cht_psw
         self.name = name
         self.sock.send(f"replace {old_id}".encode())
         self.over = False
@@ -53,7 +54,8 @@ class ChatWin(Connection):
         self.cht_place.configure(font = cht_font)
         sendbtn = Button(self.root,width = 57,height =60,bg="white",image = self.btnimg,command=self.sendmsg)
         sendbtn.place(x=732,y=530)
-        view_rc_psw = ttk.Button()
+        view_rc_psw = ttk.Button(text="View room ID and password",style= "AccentButton",command = self.showidpsw)
+        view_rc_psw.place(x=740,y=10)
         cht_lbl = Label(text="Chat room",font = ("Arial",13),bg = "gray78",fg= "black")
         cht_lbl.place(x=330,y=10)
         self.cht_place.config(state = "disabled")
@@ -67,6 +69,10 @@ class ChatWin(Connection):
         self.root.bind("<KeyRelease>",self.onrel)
         self.root.bind("<Return>",self.sendmsg)
         self.root.mainloop()
+
+    def showidpsw(self):
+        messagebox.showinfo("Info",f"Room ID : {self.cht_nm} \n Room password : {self.cht_psw}")
+
     def feedback(self):
         opw(r"https://mail.google.com/mail/u/0/?fs=1&to=shouryasinha001@gmail.com&su=Feedback%20regarding%20PyChat&&tf=cm")
     
@@ -139,7 +145,7 @@ class ChatWin(Connection):
         
         
     def checkkeyprs(self,event):self.shift_press = True
-      
+
     def onrel(self,event):
         #Checking if shift is released by the user
         if str(event).startswith("<KeyRelease event state=Shift"):self.shift_press = False  
@@ -164,6 +170,8 @@ class Main(Connection):
             print(e)
 
         try:
+            self.joined = False
+            self.created = False
             self.sock.send("id".encode())
             self.id = self.sock.recv(1024).decode()
             self.mainwin = Tk()
@@ -245,6 +253,7 @@ class Main(Connection):
             self.sock.send(self._join_psw.encode())
             msg  = self.sock.recv(1024).decode()
             if msg == "true":
+                self.joined = True
                 self.mainwin.destroy()                  #Join room here
 
             else:
@@ -274,7 +283,8 @@ class Main(Connection):
         data = self.sock.recv(1024).decode()
         if data == "invalid!":
             messagebox.showerror("Error","Please enter a different name or password")
-        elif data == "OK":  
+        elif data == "OK": 
+            self.created = True
             self.mainwin.destroy()
 
     def open_settings(self):
@@ -289,4 +299,7 @@ class Main(Connection):
 if __name__ == "__main__":
     main = Main() #Object creation
     #main.sock.close()
-    ChatWin(main.id,main.name)
+    if main.created:
+        ChatWin(main.id,main.name,main._room_name,main._room_pass)
+    elif main.joined:
+        ChatWin(main.id,main.name,main._join_id,main._join_psw)

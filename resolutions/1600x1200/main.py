@@ -20,8 +20,10 @@ class ChatWin(Connection):
     '''
     Constructor
     '''
-    def __init__(self,old_id,name):
+    def __init__(self,old_id,name,cht_nm,cht_psw):
         super().__init__(True)
+        self.cht_nm = cht_nm
+        self.cht_psw = cht_psw
         self.azure_path = os.path.join(os.path.dirname(os.path.dirname(os.path.dirname(__file__))), 'azure-dark.tcl')
         self.name = name
         self.sock.send(f"replace {old_id}".encode())
@@ -53,7 +55,8 @@ class ChatWin(Connection):
         self.cht_place.configure(font = cht_font)
         sendbtn = Button(self.root,width = 61,height =87,bg="white",image = self.btnimg,command=self.sendmsg)
         sendbtn.place(x=1531,y=1066)
-        view_rc_psw = ttk.Button()
+        view_rc_psw = ttk.Button(text="View room ID and password",style= "AccentButton",command = self.showidpsw)
+        view_rc_psw.place(x=1415,y=10)
         cht_lbl = Label(text="Chat room",font = ("Arial",13),bg = "gray78",fg= "black")
         cht_lbl.place(x=730,y=10)
         self.cht_place.config(state = "disabled")
@@ -69,7 +72,9 @@ class ChatWin(Connection):
         self.root.mainloop()
     def feedback(self):
         opw(r"https://mail.google.com/mail/u/0/?fs=1&to=shouryasinha001@gmail.com&su=Feedback%20regarding%20PyChat&&tf=cm")
-    
+
+    def showidpsw(self):
+        messagebox.showinfo("Info",f"Room ID : {self.cht_nm} \n Room password : {self.cht_psw}")
     #Receives messages; called in a thread
     def recv(self):
         
@@ -152,6 +157,8 @@ class Main(Connection):
         self.info_dir = os.path.join(os.path.dirname(os.path.dirname(os.path.dirname(__file__))),r"data\info")
         self.azure_path = os.path.join(os.path.dirname(os.path.dirname(os.path.dirname(__file__))), 'azure-dark.tcl')
         try:
+            self.created = False
+            self.joined = False
             self.sock.send("id".encode())
             self.id = self.sock.recv(1024).decode()
             self.mainwin = Tk()
@@ -219,10 +226,11 @@ class Main(Connection):
             self.sock.send(self._join_psw.encode())
             msg  = self.sock.recv(1024).decode()
             if msg == "true":
+                self.joined =True
                 self.mainwin.destroy()                  #Join room here
 
             else:
-                messagebox.showerror("Error","Either of the meeting code or password is invaild.")
+                messagebox.showerror("Error","Either of the meeting code or password is incorrect!.")
 
         except Exception as e: #Handling error
             print(e)
@@ -248,7 +256,8 @@ class Main(Connection):
         data = self.sock.recv(1024).decode()
         if data == "invalid!":
             messagebox.showerror("Error","Please enter a different name or password")
-        elif data == "OK":  
+        elif data == "OK":
+            self.created = True
             self.mainwin.destroy()
 
     def open_settings(self):
@@ -263,4 +272,7 @@ class Main(Connection):
 if __name__ == "__main__":
     main = Main() #Object creation
     #main.sock.close()
-    ChatWin(main.id,main.name)
+    if main.created:
+        ChatWin(main.id,main.name,main._room_name,main._room_pass)
+    elif main.joined:
+        ChatWin(main.id,main.name,main._join_id,main._join_psw)
