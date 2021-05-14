@@ -40,7 +40,7 @@ class ChatWin(Connection):
         self.root = Tk()
         self.called = False
         self.btnimg = PhotoImage(file = "data/images -win/send1.png",master=self.root)
-        self.root.title("Pychat2.0")
+        self.root.title("DogeChat")
         self.style = ttk.Style(self.root)
         self.root.protocol("WM_DELETE_WINDOW",self.handle_quit)
         self.root.tk.call('source','azure-dark.tcl')
@@ -177,7 +177,7 @@ class Main(Connection):
             width,height = GetSystemMetrics(0),GetSystemMetrics(1)
             geometry = f'{800}x{600}'
             self.mainwin.geometry(geometry)
-            self.mainwin.title("Pychat 2.0")
+            self.mainwin.title("DogeChat")
             self.name = self.get_name()
             Thread(target=self.gui).start()   
             self.mainwin.mainloop()
