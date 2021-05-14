@@ -48,17 +48,17 @@ class ChatWin(Connection):
         self.style.theme_use('azure-dark')
         self.root.geometry("1600x1200")
         cht_font = font.Font(family = "Trebuchet MS",size =17)
-        self.cht_place = scrolledtext.ScrolledText(self.root,width=64,height = 17)
+        self.cht_place = scrolledtext.ScrolledText(self.root,width=131,height = 36)
         self.cht_place.place(x=5,y=47)
         self.cht_place.configure(font = cht_font)
-        sendbtn = Button(self.root,width = 57,height =60,bg="white",image = self.btnimg,command=self.sendmsg)
-        sendbtn.place(x=732,y=530)
+        sendbtn = Button(self.root,width = 61,height =87,bg="white",image = self.btnimg,command=self.sendmsg)
+        sendbtn.place(x=1531,y=1066)
         view_rc_psw = ttk.Button()
         cht_lbl = Label(text="Chat room",font = ("Arial",13),bg = "gray78",fg= "black")
-        cht_lbl.place(x=330,y=10)
+        cht_lbl.place(x=730,y=10)
         self.cht_place.config(state = "disabled")
-        self.entry_area = Text(self.root,width = 120,height = 4)
-        self.entry_area.place(x=5,y=531)
+        self.entry_area = Text(self.root,width = 253,height = 6)
+        self.entry_area.place(x=5,y=1066)
         self.entry_area.focus_force()
         
         #Binding the keys to some methods
@@ -148,10 +148,9 @@ class ChatWin(Connection):
 class Main(Connection):
     
     def __init__(self):
+        super().__init__(True) #Calling the parent class's Constructor
         self.info_dir = os.path.join(os.path.dirname(os.path.dirname(os.path.dirname(__file__))),r"data\info")
         self.azure_path = os.path.join(os.path.dirname(os.path.dirname(os.path.dirname(__file__))), 'azure-dark.tcl')
-        super().__init__(True) #Calling the parent class's Constructor
-        
         try:
             self.sock.send("id".encode())
             self.id = self.sock.recv(1024).decode()
@@ -183,16 +182,16 @@ class Main(Connection):
     def gui(self):
         tab = Canvas(width=796,height=45)
         tab_label = Label(text = "Pychat 2.0",bg = "gray40",font = ("Arial",15),fg= "white")
-        tab_label.place(x=360,y=12)
+        tab_label.place(x=760,y=12)
         tab.place(x=1,y=0)
-        Chats = Canvas(width=300,height=540,bg='gray30')
+        Chats = Canvas(width=300,height=1100,bg='gray30')
         Chats.place(x=1,y=47)
         user_block = Canvas(width = 300,height = 61)
-        user_block.place(x=1,y=535)
+        user_block.place(x=1,y=1090)
         username_label = Label(text = str(self.username) ,bg = "gray48",font = ("Arial",15),fg= "white")
-        username_label.place(x=10,y=550)
+        username_label.place(x=10,y=1120)
         settings = Button(image=self.settings_file,width=40,height=40,command = self.open_settings)
-        settings.place(x=250,y=545)
+        settings.place(x=250,y=1115)
         add_chats = ttk.Button(text="Create Room",width=20,style="AccentButton",command=self.add_chats)
         add_chats.place(x=15,y=91)
         join_chat = ttk.Button(text="Join Room",width=20,style="AccentButton",command=self.join_chat)

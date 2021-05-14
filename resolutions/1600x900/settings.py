@@ -34,6 +34,7 @@ class Settings(Connection):
     def reso_settings(self):
         self.settings_win.destroy()
         self.resowin = Tk()
+        self.resowin.resizable(0,0)
         self.resowin.title("Resolution settings")
         self.resowin.geometry("800x600")
         res_sty = ttk.Style(self.resowin)
