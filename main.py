@@ -93,12 +93,7 @@ class ChatWin(Connection):
                 indicating that there's a new message
                 '''
 
-                #Remove this comment
-                '''
-                Notification.txt -> if message from settings(with help of txt) 
-                [call it in a thread] -> execute if statement for noti
-                '''
-                '''
+    
                 if str(self.root.focus_get()) == "None":
                     notification.notify(
                         title = "New message!",
@@ -106,7 +101,7 @@ class ChatWin(Connection):
                         #app_icon = self.icon,
                         timeout = 8
                     )
-                '''
+
             except ConnectionAbortedError:
                 break
             
