@@ -55,7 +55,7 @@ class ChatWin(Connection):
         sendbtn = Button(self.root,width = 57,height =60,bg="white",image = self.btnimg,command=self.sendmsg)
         sendbtn.place(x=732,y=530)
         view_rc_psw = ttk.Button(text="View room ID and password",style= "AccentButton",command = self.showidpsw)
-        view_rc_psw.place(x=740,y=10)
+        view_rc_psw.place(x=640,y=10)
         cht_lbl = Label(text="Chat room",font = ("Arial",13),bg = "gray78",fg= "black")
         cht_lbl.place(x=330,y=10)
         self.cht_place.config(state = "disabled")
