@@ -61,9 +61,10 @@ class Settings(Connection):
         if cmd == "go":
             self.sock.send(s.encode())
             print("sent")
+        messagebox.showinfo("Success","Changes saved successfully! \n Note : You need to restart the application in order for the changes to take place.")
     #Mainwindow ; frontend code
     def main(self):
-        
+
         self.username = self.get_name()
         set_lbl = Label(self.settings_win,text="Settings",font = ("Arial",13),bg = "gray78",fg= "black")
         set_lbl.place(x=370,y=10)
