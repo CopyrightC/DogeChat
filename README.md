@@ -14,6 +14,7 @@ Open up your terminal and run the following command
 ```
 git clone https://github.com/SATAN01/DogeChat
 cd DogeChat
+pip install -r requirements.txt
 cd Server
 python server.py
 ```
@@ -22,6 +23,7 @@ python server.py
 ```
 git clone https://github.com/SATAN01/DogeChat
 cd DogeChat
+pip install -r requirements.txt
 python register.py
 ```
 
