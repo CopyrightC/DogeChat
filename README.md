@@ -12,7 +12,7 @@ It's pretty straightforward, you can create/join chat rooms easily and chat with
 # How do I run it on my machine?
 
 Make sure you have python 3.6 +
-Open up your terminal and run the following command
+Open up your terminal and run the following sequence of commands
 
 (For setting up server)
 ```
