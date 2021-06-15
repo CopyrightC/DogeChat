@@ -24,7 +24,7 @@ cd Server
 python server.py
 ```
 
-(For client)
+(For client; **Make sure you change the ip in clinet.py!**)
 ```
 git clone https://github.com/SATAN01/DogeChat
 cd DogeChat
