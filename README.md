@@ -31,7 +31,7 @@ cd DogeChat
 pip install -r requirements.txt
 python register.py
 ```
-
+If you want to run this globally , you need [forward ports](https://stackoverflow.com/questions/67596766/how-could-we-establish-connection-between-server-and-client-through-socket-progr/67597468?noredirect=1#comment119731269_67597468)
 # Special Thanks
 
 Thanks to [@rdbende](https://github.com/rdbende) for the [Azure-ttk-theme](https://github.com/rdbende/Azure-ttk-theme)
